@@ -16,7 +16,7 @@ type Props = {
 const ThreadCard:React.FC<Props> = (props) => {
     const {author,comments,isComment,content,createdAt,community,parentId,id,currentUser} = props;
     return (
-        <article className={'flex w-full flex-col rounded-xl bg-dark-2 p-7'}>
+        <article className={`${isComment ? 'px-0 xs:px-7 bg-dark-1 p-7' : 'flex w-full flex-col rounded-xl bg-dark-2 p-7'}`}>
             <div className={'flex justify-between items-start'}>
                 <div className={'w-full flex flex-1 flex-grow gap-4'}>
                     <div className={'flex flex-col items-center'}>
