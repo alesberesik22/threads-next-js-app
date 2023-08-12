@@ -18,10 +18,12 @@ import {useUploadThing} from "@/lib/uploadThing";
 import {usePathname, useRouter} from "next/navigation";
 import {ThreadValidation} from "@/lib/validations/thread";
 import {createThread} from "@/lib/actions/thread.actions";
+import {useOrganization} from "@clerk/nextjs";
 
 const PostThread = ({userId}: { userId: string }) => {
     const [files, setFiles] = useState<File[]>([]);
     const {startUpload} = useUploadThing("media");
+    const organization = useOrganization();
     const router = useRouter();
     const pathName = usePathname();
 
@@ -37,7 +39,7 @@ const PostThread = ({userId}: { userId: string }) => {
         await createThread({
             text: values.thread,
             author: userId,
-            communityId: null,
+            communityId: organization.organization ? organization.organization.id : null,
             path: pathName,
         });
 

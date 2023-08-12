@@ -2,6 +2,7 @@ import React from 'react';
 import {fetchUserPosts} from "@/lib/actions/user.action";
 import {redirect} from "next/navigation";
 import ThreadCard from "@/components/cards/ThreadCard";
+import {fetchCommunityPosts} from "@/lib/actions/community.actions";
 
 type Props = {
     currentUserId: string
@@ -9,19 +10,27 @@ type Props = {
     accountType: string
 }
 const ThreadsTab: React.FC<Props> = async ({accountType, accountId, currentUserId}) => {
-    const threads = await fetchUserPosts(accountId);
-    console.log(threads);
+    let result: any;
 
-    if (!threads) redirect('/')
+    if(accountType === 'Community') {
+        result = await fetchCommunityPosts(accountId);
+    } else {
+        result = await fetchUserPosts(accountId);
+    }
+
+    if (!result) redirect('/')
+
+    console.log(result);
+
     return (
         <section className={'mt-9 flex flex-col gap-10'}>
-            {threads.threads.map((thread: any) => (
+            {result.threads.map((thread: any) => (
                 <ThreadCard key={thread._id} id={thread._id} currentUser={currentUserId} parentId={thread.parentId}
                             content={thread.text} author={accountType === 'User' ? {
-                    name: threads.name,
-                    image: threads.image,
-                    id: threads.id
-                } : {name: thread.author.name, image: thread.author.image, id: thread.autorh.id}}
+                    name: result.name,
+                    image: result.image,
+                    id: result.id
+                } : {name: thread.author.name, image: thread.author.image, id: thread.author.id}}
                             community={thread.community}
                             createdAt={thread.createdAt} comments={thread.comments}/>
             ))}

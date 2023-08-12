@@ -8,9 +8,10 @@ type Props = {
     username: string;
     image: string;
     bio: string;
+    type?: 'User' | 'Community';
 }
 const ProfileHeader: React.FC<Props> = (props) => {
-    const {bio, authUserId, accountId, username, image, name} = props;
+    const {bio, authUserId, accountId, username, image, name, type} = props;
     return (
         <div className={'flex w-full flex-col justify-start'}>
             <div className={'flex items-center justify-between'}>
